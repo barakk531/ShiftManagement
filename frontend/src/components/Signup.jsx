@@ -4,7 +4,7 @@ import './Signup.css';
 
 
 
-  function signupAction(prevFormState, formData) {
+  async function signupAction(prevFormState, formData) {
     const email = formData.get('email');
     const password = formData.get('password');
     const confirmPassword = formData.get('confirm-password');
@@ -60,7 +60,70 @@ import './Signup.css';
       };
     }
 
-    return {errors: null};
+    try {
+      const response = await fetch('http://127.0.0.1:8080/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          password,
+          'first-name': firstName,
+          'last-name': lastName,
+          role,
+          terms: terms ? 1 : 0,
+          acquisition: acquisitionChannel,
+        }),
+      });
+
+      const resData = await response.json();
+
+      if (!response.ok) {
+        const serverErrors = [];
+
+        if (resData?.errors?.email) serverErrors.push(resData.errors.email);
+        if (resData?.errors?.password) serverErrors.push(resData.errors.password);
+
+        if (serverErrors.length === 0 && resData?.message) serverErrors.push(resData.message);
+
+        return {
+          errors: serverErrors.length ? serverErrors : ['Signup failed.'],
+          enteredValues: {
+            email,
+            password,
+            confirmPassword,
+            firstName,
+            lastName,
+            role,
+            acquisitionChannel,
+            terms,
+          },
+        };
+      }
+
+      const token = resData?.token;
+      if (token) {
+        localStorage.setItem('token', token);
+
+        const expiration = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+        localStorage.setItem('expiration', expiration);
+      }
+
+      return { errors: null, success: true };
+    } catch (err) {
+      return {
+        errors: ['Network error: could not reach backend.'],
+        enteredValues: {
+          email,
+          password,
+          confirmPassword,
+          firstName,
+          lastName,
+          role,
+          acquisitionChannel,
+          terms,
+        },
+      };
+    }
  }
 
 
@@ -163,6 +226,14 @@ export default function Signup() {
         {formState.errors && (<ul className='error'>
             {formState.errors.map((error) => (<li key={error}>{error}</li>))}
             </ul>)}
+
+        {formState.success && (
+        <p className="success">
+            Signup successful! You can now continue.
+        </p>
+        )}
+
+
 
         <p className="form-actions">
             <button type="reset" className="button button-flat">
