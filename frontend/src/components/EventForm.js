@@ -288,7 +288,8 @@ export async function action({ request, params }) {
   const token = getAuthToken();
 
   const url =
-    method === 'PATCH'
+    // method === 'PATCH'
+    method === 'PUT'
       ? `http://localhost:8080/events/${params.eventId}`
       : 'http://localhost:8080/events';
 

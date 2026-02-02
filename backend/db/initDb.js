@@ -42,6 +42,14 @@ async function initDb() {
     await pool.query(stmt);
   }
 
+  
+  // DEBUG: verify events table columns
+  const [cols] = await pool.query("SHOW COLUMNS FROM events");
+  console.log(
+    "events columns:",
+    cols.map(c => c.Field)
+  );
+
   return pool;
 }
 

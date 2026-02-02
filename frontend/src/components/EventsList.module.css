@@ -34,3 +34,29 @@
 .item h2 {
   margin: 0 0 1rem 0;
 }
+
+
+
+
+
+/* do the money orange, if i put all in comment it will be regular color */
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+
+
+/* .date {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #f1f1f1;
+} */
+
+.shiftTotal {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: #ffb703;
+  font-weight: 600;
+}

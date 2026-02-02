@@ -29,3 +29,47 @@
   border: none;
   color: var(--color-primary-800);
 }
+
+
+
+
+
+
+
+
+.event {
+  display: flex;
+  gap: 16px;
+}
+
+/* Text column */
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Date + money stacked */
+.meta {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+
+/* Date */
+.date {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+/* Shift total */
+.shiftTotal {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: #ffb703;
+  font-weight: 600;
+}
+
+/* Description */
+.description {
+  margin-top: 8px;
+}

@@ -29,12 +29,27 @@ app.use(
 );
 
 // ✅ preflight (OPTIONS)
+
 app.options("*", cors());
+app.use((req, res, next) => {
+  console.log("REQ:", req.method, req.url);
+  next();
+});
 
 // Routes
 app.use("/auth", authRoutes);
 app.use("/events", eventRoutes);
 app.use("/forum", forumRoutes);
+
+
+
+// Global error handler (always return JSON)
+app.use((error, req, res, next) => {
+  const status = error.status || 500;
+  const message = error.message || 'Something went wrong.';
+  res.status(status).json({ message });
+});
+
 
 // Init DB and then start server
 initDb()
@@ -49,8 +64,6 @@ initDb()
     console.error("Failed to initialize DB:", err);
     process.exit(1);
   });
-
-
 
 
 

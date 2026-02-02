@@ -2,23 +2,40 @@ const pool = require("../db"); // adjust path if your folder structure differs
 
 // Get all posts from all users (shared forum)
 async function getAllPosts() {
-  const [rows] = await pool.execute(`
-    SELECT 
-      p.id,
-      p.title,
-      p.body,
-      p.created_at AS createdAt,
-      u.id AS userId,
-      u.email,
-      u.first_name AS firstName,
-      u.last_name AS lastName
-    FROM forum_posts p
-    JOIN users u ON u.id = p.user_id
-    ORDER BY p.created_at DESC
+  const [rows] = await pool.query(`
+    SELECT
+      fp.id,
+      fp.title,
+      fp.body,
+      fp.created_at,
+      u.first_name,
+      u.last_name
+    FROM forum_posts fp
+    JOIN users u ON u.id = fp.user_id
+    ORDER BY fp.created_at DESC
   `);
 
   return rows;
 }
+
+// async function getAllPosts() {
+//   const [rows] = await pool.execute(`
+//     SELECT 
+//       p.id,
+//       p.title,
+//       p.body,
+//       p.created_at AS createdAt,
+//       u.id AS userId,
+//       u.email,
+//       u.first_name AS firstName,
+//       u.last_name AS lastName
+//     FROM forum_posts p
+//     JOIN users u ON u.id = p.user_id
+//     ORDER BY p.created_at DESC
+//   `);
+
+//   return rows;
+// }
 
 // Create post for logged-in user
 async function createPostForUser({ title, body }, userId) {
