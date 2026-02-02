@@ -1,3 +1,7 @@
+
+
+console.log('🔥 app.js started');
+
 const bodyParser = require('body-parser');
 const express = require('express');
 
@@ -5,6 +9,20 @@ const eventRoutes = require('./routes/events');
 const authRoutes = require('./routes/auth');
 
 const app = express();
+
+
+const pool = require('./db');
+
+(async () => {
+  try {
+    const conn = await pool.getConnection();
+    console.log('✅ Connected to MySQL');
+    conn.release();
+  } catch (err) {
+    console.error('❌ MySQL connection failed:', err.message);
+  }
+})();
+
 
 app.use(bodyParser.json());
 app.use((req, res, next) => {
@@ -24,4 +42,12 @@ app.use((error, req, res, next) => {
   res.status(status).json({ message: message });
 });
 
-app.listen(8080);
+
+
+
+
+app.listen(8080, () => {
+  console.log('🚀 Server running on port 8080');
+});
+
+// app.listen(8080);

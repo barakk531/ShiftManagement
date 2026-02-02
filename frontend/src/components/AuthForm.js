@@ -32,9 +32,15 @@ function AuthForm() {
           <input id="password" type="password" name="password" required />
         </p>
         <div className={classes.actions}>
-          <Link to={`?mode=${isLogin ? 'signup' : 'login'}`}>
+          {isLogin ? (
+            <Link to="/create-account">Create new user</Link>
+          ) : (
+            <Link to="/auth?mode=login">Login</Link>
+          )}
+
+          {/* <Link to={`?mode=${isLogin ? 'signup' : 'login'}`}>
             {isLogin ? 'Create new user' : 'Login'}
-          </Link>
+          </Link> */}
           <button disabled={isSubmitting}>{isSubmitting ? 'Submitting...' : 'Save'}</button>
         </div>
       </Form>
