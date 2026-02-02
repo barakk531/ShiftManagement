@@ -46,3 +46,58 @@
 .actions a:hover {
   background-color: var(--color-gray-800);
 }
+
+
+
+
+
+
+.actionsWrap {
+  margin-top: 10px;
+}
+
+.forgotRow {
+  display: flex;
+  justify-content: flex-end; /* puts it above and aligned to the right like buttons */
+  margin-bottom: 8px;
+}
+
+.forgotLink {
+  /* reset button defaults / global styles */
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+
+  color: var(--color-primary, #fbd26a);
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+
+.forgotLink:hover {
+  text-decoration: underline;
+}
+
+.actionsRow {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 14px;
+}
+
+
+/* <-- adds space from password input 
+.forgotRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;   
+  margin-bottom: 8px;
+}
+*/

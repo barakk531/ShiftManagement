@@ -1,9 +1,15 @@
 
 import { redirect } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
+import { Link } from "react-router-dom";
+
 
 function AuthenticationPage() {
-  return <AuthForm />;
+  return (
+  <>
+    <AuthForm />
+  </>
+  );
 }
 
 export default AuthenticationPage;
@@ -57,7 +63,6 @@ export async function action({request}) {
   const expiration = new Date();
   expiration.setHours(expiration.getHours() + 1);
   localStorage.setItem('expiration', expiration.toISOString());
-
 
 
   return redirect('/');

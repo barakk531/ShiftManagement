@@ -31,4 +31,22 @@ async function sendVerificationCodeEmail({ to, code, minutes = 5 }) {
   });
 }
 
-module.exports = { sendTestEmail, sendVerificationCodeEmail };
+
+
+async function sendPasswordResetCodeEmail({ to, code, minutes }) {
+  return resend.emails.send({
+    from: process.env.EMAIL_FROM,
+    to,
+    subject: "Reset password",
+    html: `
+      <div style="font-family: Arial, sans-serif;">
+        <h2>Reset password</h2>
+        <p>Use this 6-digit code to reset your password:</p>
+        <div style="font-size: 28px; font-weight: 700; letter-spacing: 4px;">${code}</div>
+        <p>This code expires in ${minutes} minutes.</p>
+      </div>
+    `,
+  });
+}
+
+module.exports = { sendTestEmail, sendVerificationCodeEmail, sendPasswordResetCodeEmail };

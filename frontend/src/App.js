@@ -25,6 +25,7 @@ import ShiftSwapsPage, { loader as shiftSwapsLoader } from "./pages/ShiftSwaps/S
 import NewShiftSwapPage, { action as newShiftSwapAction } from "./pages/ShiftSwaps/NewShiftSwap";
 import ShiftSwapDetailsPage, { loader as shiftSwapDetailsLoader } from "./pages/ShiftSwaps/ShiftSwapDetails";
 import VerifyEmailPage from './pages/VerifyEmail';
+import ForgotPassword from "./pages/ForgotPassword";
 
 
 
@@ -35,6 +36,9 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     id: 'root',
     loader: tokenLoader,
+    shouldRevalidate() {
+      return true;
+    },
     children: [
       { index: true, element: <HomePage /> },
       {
@@ -77,6 +81,10 @@ const router = createBrowserRouter([
         path: 'auth',
         element: <AuthenticationPage />,
         action: authAction,
+      },
+      {
+        path: "forgot-password",
+        element: <ForgotPassword />,
       },
       {
         path: 'newsletter',

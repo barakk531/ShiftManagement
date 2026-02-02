@@ -4,10 +4,12 @@ import './Signup.css';
 
 import { useEffect, useState } from 'react';
 import EmailVerificationModal from "./EmailVerificationModal";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [formState, formAction] = useActionState(signupAction, { errors: null });
   const [isVerifyOpen, setIsVerifyOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (formState?.needsEmailVerification) {
@@ -28,7 +30,8 @@ export default function Signup() {
 
   function onVerified() {
     setIsVerifyOpen(false);
-    window.location.href = "/";
+    // window.location.href = "/";
+    navigate("/", { replace: true });
   }
 
   function onClose() {
@@ -222,6 +225,7 @@ export default function Signup() {
         body: JSON.stringify({
           email,
           password,
+          confirmPassword,
           'first-name': firstName,
           'last-name': lastName,
           role,
@@ -232,8 +236,21 @@ export default function Signup() {
 
       const resData = await response.json();
       if (!response.ok) {
+        const serverErrors = [];
+
+        if (resData?.errors && typeof resData.errors === 'object') {
+          for (const msg of Object.values(resData.errors)) {
+            if (msg) serverErrors.push(String(msg));
+          }
+        }
+
+        // fallback
+        if (serverErrors.length === 0) {
+          serverErrors.push(resData?.message || 'Signup failed.');
+        }
+
         return {
-          errors: [resData?.message || 'Signup failed.'],
+          errors: serverErrors,
           enteredValues: {
             email,
             password,

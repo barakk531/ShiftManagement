@@ -67,13 +67,15 @@ function MainNavigation() {
           <li>
             <NavLink to="/shift-swaps">Shift-Swap</NavLink>
           </li>
-          <li className={classes.logoutItem}>
-            <Form action="/logout" method="post" className={classes.logoutForm}>
-              <button type="submit" className={classes.navButton}>
-                Logout
-              </button>
-            </Form>
-          </li>
+          {token && (
+            <li className={classes.logoutItem}>
+              <Form action="/logout" method="post" className={classes.logoutForm}>
+                <button type="submit" className={classes.navButton}>
+                  Logout
+                </button>
+              </Form>
+            </li>
+          )}
 
         </ul>
 

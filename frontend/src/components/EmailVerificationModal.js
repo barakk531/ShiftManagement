@@ -80,6 +80,15 @@ export default function EmailVerificationModal({
       if (token) {
         localStorage.setItem("token", token);
       }
+      if (data?.user) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+			}
+			if (token) {
+					const expiration = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // שעה
+					localStorage.setItem("expiration", expiration);
+			}
+
+			localStorage.removeItem("pendingEmailVerificationEmail");
 
       setStatus({ loading: false, error: "" });
 

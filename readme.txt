@@ -1,1 +1,1 @@
-include email verification when create new user
+works with verification when create new user and with reset password

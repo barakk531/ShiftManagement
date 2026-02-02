@@ -92,10 +92,10 @@ export default function VerifyEmail() {
       }
 
       // In dev you return devCode - show it so you can test quickly.
-      if (resData?.devCode) {
-        // eslint-disable-next-line no-alert
-        alert(`DEV CODE: ${resData.devCode}`);
-      }
+    //   if (resData?.devCode) {
+    //     // eslint-disable-next-line no-alert
+    //     alert(`DEV CODE: ${resData.devCode}`);
+    //   }
 
       setStatus({ loading: false, error: null, success: false });
     } catch (err) {

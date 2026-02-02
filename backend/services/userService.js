@@ -53,6 +53,7 @@ async function createUser(userData) {
   }
 }
 
+
 async function getUserByEmail(email) {
   const connection = await pool.getConnection();
 
@@ -66,7 +67,9 @@ async function getUserByEmail(email) {
           last_name,
           email_verified,
           email_verification_code_hash,
-          email_verification_expires_at
+          email_verification_expires_at,
+          password_reset_code_hash,
+          password_reset_expires_at
        FROM users
        WHERE email = ?
        LIMIT 1`,
@@ -83,14 +86,19 @@ async function getUserByEmail(email) {
       passwordHash: user.password_hash,
       firstName: user.first_name,
       lastName: user.last_name,
-      emailVerified: user.email_verified, // 0/1
+      emailVerified: user.email_verified,
+
       emailVerificationCodeHash: user.email_verification_code_hash,
       emailVerificationExpiresAt: user.email_verification_expires_at,
+
+      passwordResetCodeHash: user.password_reset_code_hash,
+      passwordResetExpiresAt: user.password_reset_expires_at,
     };
   } finally {
     connection.release();
   }
 }
+
 
 // Email verification: store code hash + expiry
 async function setEmailVerification(userId, codeHash, expiresAt) {

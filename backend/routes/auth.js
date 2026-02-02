@@ -1,6 +1,17 @@
 
-const { sendTestEmail, sendVerificationCodeEmail } = require("../services/emailService");
+const {
+  sendTestEmail,
+  sendVerificationCodeEmail,
+  sendPasswordResetCodeEmail,
+} = require("../services/emailService");
 
+const {
+  createResetCodeBundle,
+  setPasswordReset,
+  clearPasswordReset,
+  updateUserPassword,
+  verifyResetCode,
+} = require("../services/forgotPassService");
 
 
 // for email authenticate 
@@ -169,10 +180,22 @@ router.post('/verify-email', async (req, res) => {
       lastName: user.lastName,
     });
 
+    // return res.status(200).json({
+    //   message: 'Email verified successfully.',
+    //   token,
+    // });
     return res.status(200).json({
       message: 'Email verified successfully.',
       token,
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role ?? "user",
+      },
     });
+
     } catch (err) {
       console.error('verify-email error:', err);
       return res.status(500).json({ message: 'Verification failed.' });
@@ -299,6 +322,119 @@ router.post("/test-email", async (req, res) => {
     return res.status(500).json({ ok: false, error: err.message });
   }
 });
+
+
+router.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+
+  const genericOk = () =>
+    res.status(200).json({
+      message: "If an account exists, a reset code was sent.",
+      expiresInSeconds: 300,
+    });
+
+  if (!isValidEmail(email)) return genericOk();
+
+  const user = await getUserByEmail(email);
+  if (!user) return genericOk();
+
+  const verificationCode = String(crypto.randomInt(100000, 1000000));
+  const codeHash = await bcrypt.hash(verificationCode, 10);
+  const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+
+  await setPasswordReset(user.id, codeHash, expiresAt);
+
+  try {
+    await sendPasswordResetCodeEmail({
+      to: email,
+      code: verificationCode,
+      minutes: 5,
+    });
+  } catch (e) {
+    console.error("FAILED TO SEND RESET EMAIL:", e);
+    return res.status(500).json({ message: "Failed to send reset email" });
+  }
+
+  return genericOk();
+});
+
+// verification to the code that send in email, that is the right one
+router.post("/verify-reset-code", async (req, res) => {
+  try {
+    const { email, code } = req.body;
+
+    const emailNorm = String(email || "").trim().toLowerCase();
+    const codeStr = String(code || "").trim();
+
+    if (!isValidEmail(emailNorm)) {
+      return res.status(400).json({ message: "Invalid email" });
+    }
+
+    if (!/^\d{6}$/.test(codeStr)) {
+      return res.status(400).json({ message: "Invalid code" });
+    }
+
+    const user = await getUserByEmail(emailNorm);
+    if (!user) {
+      return res.status(400).json({ message: "Invalid code or expired" });
+    }
+
+    const reset = await verifyResetCode(
+      {
+        password_reset_code_hash: user.passwordResetCodeHash,
+        password_reset_expires_at: user.passwordResetExpiresAt,
+      },
+      codeStr
+    );
+
+    if (!reset.ok) {
+      return res.status(400).json({ message: "Invalid code or expired" });
+    }
+
+    return res.status(200).json({ message: "Code verified" });
+  } catch (err) {
+    console.error("verify-reset-code error:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
+
+
+router.post("/reset-password", async (req, res) => {
+  const { email, code, newPassword } = req.body;
+
+  const emailNorm = String(email || "").trim().toLowerCase();
+  
+  if (!isValidEmail(emailNorm)) return res.status(400).json({ message: "Invalid email" });
+  if (!isValidText(newPassword, 6)) {
+    return res.status(400).json({ message: "Password must be at least 6 characters" });
+  }
+  if (!code || String(code).length !== 6) {
+    return res.status(400).json({ message: "Invalid code" });
+  }
+
+  const user = await getUserByEmail(emailNorm);
+  if (!user) return res.status(400).json({ message: "Invalid code or expired" });
+
+  // ✅ use camelCase (like verify-email does)
+  const expiresAt = user.passwordResetExpiresAt ?? user.password_reset_expires_at;
+  const codeHash  = user.passwordResetCodeHash ?? user.password_reset_code_hash;
+
+  if (!expiresAt || new Date(expiresAt) < new Date()) {
+    return res.status(400).json({ message: "Invalid code or expired" });
+  }
+
+  const ok = await bcrypt.compare(String(code), codeHash || "");
+  if (!ok) return res.status(400).json({ message: "Invalid code or expired" });
+
+  const passwordHash = await bcrypt.hash(newPassword, 10);
+
+  await updateUserPassword(user.id, passwordHash);
+  await clearPasswordReset(user.id);
+
+  return res.status(200).json({ message: "Password updated successfully" });
+});
+
 
 
 router.post('/login', async (req, res) => {
