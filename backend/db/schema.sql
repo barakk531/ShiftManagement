@@ -1,4 +1,5 @@
-CREATE DATABASE IF NOT EXISTS events_app;
+-- schema.sql (safe to run multiple times)
+-- DB is created/selected in initDb.js
 
 CREATE TABLE IF NOT EXISTS users (
   id VARCHAR(36) PRIMARY KEY,
@@ -20,5 +21,30 @@ CREATE TABLE IF NOT EXISTS events (
   date DATE NOT NULL,
   image TEXT NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  INDEX idx_events_user_id (user_id)
+
+  INDEX idx_events_user_id (user_id),
+
+  CONSTRAINT fk_events_user
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS forum_posts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id VARCHAR(36) NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  body TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+  INDEX idx_forum_posts_created_at (created_at),
+  INDEX idx_forum_posts_user_id (user_id),
+
+  CONSTRAINT fk_forum_posts_user
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE
+);
+
+
+-- CREATE INDEX idx_forum_posts_created_at ON forum_posts(created_at);
+-- CREATE INDEX idx_forum_posts_user_id ON forum_posts(user_id);
+

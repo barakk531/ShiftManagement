@@ -58,11 +58,11 @@ function MainNavigation() {
             </Form>
           </li>
           )}
+          {token && (
           <li>
-            {/* <Form action="/logout" method="post">
-              <button>Logout</button>
-            </Form> */}
-          </li>        
+            <NavLink to="/forum">Forum</NavLink>
+          </li>
+          )}      
         </ul>
       </nav>
       <NewsletterSignup />

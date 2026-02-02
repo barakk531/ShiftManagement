@@ -17,6 +17,7 @@ import AuthenticationPage, {action as authAction} from './pages/Authentication';
 import { action as logoutAction } from './pages/Logout';
 import { checkAuthLoader, tokenLoader } from './util/auth';
 import CreateAccountPage from './pages/CreateAccount';
+import ForumPage from "./pages/Forum";
 
 
 const router = createBrowserRouter([
@@ -80,6 +81,11 @@ const router = createBrowserRouter([
       {
         path: 'create-account',
         element: <CreateAccountPage />,
+      },
+
+      {
+        path: "forum",
+        element: <ForumPage />,
       },
     ],
   },

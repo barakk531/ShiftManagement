@@ -1,0 +1,446 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Poppins', sans-serif;
+}
+
+.forum body {
+  margin: 0;
+  padding: 0;
+  background-color: #f9f7f3;
+  color: #353331;
+}
+
+#main-header {
+  text-align: center;
+  background-color: #2e2923;
+  color: #d2cdc6;
+  padding: 3rem;
+}
+
+.forum h1 {
+  font-size: 3rem;
+  font-family: 'Rubik', sans-serif;
+  color: #fd9217;
+  margin: 0 0 1rem 0;
+}
+
+#main-header p {
+  max-width: 25rem;
+  margin: 0 auto;
+}
+
+.forum main {
+  max-width: 50rem;
+  margin: 3rem auto;
+  padding: 2rem;
+  border-left: 1px solid #353331;
+  border-right: 1px solid #353331;
+}
+
+#new-opinion {
+  background-color: #2e2923;
+  color: #f9f7f3;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 16px 1px rgba(0, 0, 0, 0.5);
+}
+
+#new-opinion h2 {
+  color: #fcc586;
+  margin: 0;
+}
+
+.control-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.control-row .control {
+  flex: 1;
+}
+
+.forum label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-family: 'Rubik', sans-serif;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #d2cdc6;
+}
+
+.forum input,
+form textarea {
+  display: block;
+  font: inherit;
+  width: 100%;
+  padding: 0.5rem;
+  font-family: 'Rubik', sans-serif;
+  border-radius: 4px;
+  border: 1px solid #353331;
+  background-color: #f9f7f3;
+  color: #353331;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.forum  button {
+  font: inherit;
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  font-family: 'Rubik', sans-serif;
+  font-weight: bold;
+  color: #2e2923;
+  background-color: #fd9217;
+  border: 1px solid #fd9217;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.forum button:disabled,
+.forum button:disabled:hover {
+  background-color: #869999;
+  border-color: #869999;
+  cursor: not-allowed;
+}
+
+.forum button:hover {
+  background-color: #f97706;
+  border-color: #f97706;
+}
+
+.errors {
+  list-style: none;
+  color: #fcc586;
+  font-size: 0.85rem;
+  padding: 0;
+  margin-top: 0.5rem;
+}
+
+#opinions ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#opinions li {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 4px;
+  background-color: #e9decf;
+}
+
+#opinions h3 {
+  font-family: 'Rubik', sans-serif;
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+#opinions header p {
+  margin: 0;
+  color: #938c83;
+  font-size: 0.9rem;
+}
+
+#opinions p {
+  font-size: 1.5rem;
+}
+
+.votes {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+  align-items: center;
+}
+
+.votes span {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+  font-size: 1rem;
+  color: #f97706;
+  font-weight: bold;
+}
+
+.votes button {
+  padding: 0;
+  color: #a38152;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
+.votes button:hover {
+  background-color: transparent;
+  border: none;
+  color: #fd9217;
+}
+
+.votes button:disabled,
+.votes button:disabled:hover {
+  color: #c2af93;
+  background-color: transparent;
+  border: none;
+  cursor: not-allowed;
+}
+
+
+
+
+
+
+/* //------- */
+
+/* ===============================
+   Forum – Green Turquoise Theme
+   =============================== */
+
+/* ===== Root container ===== */
+.forum-container {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 32px 20px;
+  background: linear-gradient(180deg, #264b4c 0%, #1f3f40 100%);
+  border-radius: 14px;
+  color: #e6f2f2;
+}
+
+/* ===== Titles ===== */
+.forum-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: orange;
+  margin-bottom: 24px;
+}
+
+.forum-subtitle {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: orange;
+  margin: 40px 0 20px;
+}
+
+/* ===== Labels ===== */
+.forum-container label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  color: #b8dede;
+}
+
+/* ===== Inputs & Textarea ===== */
+.forum-container input,
+.forum-container textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 6px;
+  border: 1px solid #3b6a6b;
+  background-color: #1b2f30; /* ירוק כהה אחיד */
+  color: #e6f2f2;
+  font-size: 1rem;
+  margin-bottom: 16px;
+}
+
+.forum-container textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.forum-container input::placeholder,
+.forum-container textarea::placeholder {
+  color: #9fc7c7;
+}
+
+/* ===== Submit Button ===== */
+.forum-container button {
+  background-color: orange;
+  color: #1f3f40;
+  border: none;
+  padding: 10px 26px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.forum-container button:hover {
+  background-color: #ffb733;
+  transform: translateY(-1px);
+}
+
+/* ===== Opinions List ===== */
+.opinions {
+  margin-top: 16px;
+}
+
+/* ===== Single Opinion Card ===== */
+.opinion {
+  background-color: #264b4c;
+  padding: 18px 16px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Opinion title */
+.opinion h2,
+.opinion h3 {
+  margin: 0 0 8px;
+  color: orange;
+  font-size: 1.2rem;
+}
+
+/* Opinion body text */
+.opinion p {
+  margin: 0;
+  line-height: 1.6;
+  color: #e6f2f2;
+}
+
+/* ===== Meta info (author / date if exists) ===== */
+.opinion-meta {
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  color: #a7d3d3;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+  .forum-container {
+    padding: 24px 14px;
+  }
+
+  .forum-title {
+    font-size: 1.5rem;
+  }
+
+  .forum-subtitle {
+    font-size: 1.3rem;
+  }
+}
+
+
+
+
+
+
+/* ===================================================== */
+/* Opinion card readability overrides                     */
+/* Makes text readable on the light card background       */
+/* ===================================================== */
+
+#opinions li,
+.opinion {
+  color: #1f2d2d;
+}
+
+.opinion .post-title {
+  color: #0f3d3e;
+  font-weight: 700;
+}
+
+.opinion .post-meta,
+.opinion .opinion-meta {
+  color: #6b8e8d;
+  font-size: 0.9rem;
+}
+
+.opinion .post-content {
+  color: #2e4f4f;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* ===================================================== */
+/* Vote buttons (small, orange, consistent)               */
+/* Overrides the old transparent .votes button styling    */
+/* ===================================================== */
+
+.votes.vote-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.votes.vote-container .vote-btn {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 8px;
+  background-color: #ffb703;
+  border: none;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.votes.vote-container .vote-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.votes.vote-container .vote-btn:disabled,
+.votes.vote-container .vote-btn:disabled:hover {
+  opacity: 0.55;
+  transform: none;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.votes.vote-container .vote-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: #1f2d2d;
+}
+
+
+
+/* ===================================================== */
+/* Text readability fixes (keep original orange design) */
+/* ===================================================== */
+
+.opinion h3,
+.opinion .post-title {
+  color: #ffd166;          /* soft orange / warm yellow */
+  font-weight: 700;
+}
+
+.opinion .post-meta,
+.opinion .opinion-meta {
+  color: #f1f1f1;          /* light neutral text */
+  opacity: 0.85;
+  font-size: 0.9rem;
+}
+
+.opinion p,
+.opinion .post-content {
+  color: #ffffff;          /* clean white for content */
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+
+.votes.vote-container .vote-btn {
+  width: 32px;
+  height: 32px;
+}
+
+.votes.vote-container .vote-btn svg {
+  width: 14px;
+  height: 14px;
+}
