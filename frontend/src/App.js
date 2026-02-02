@@ -18,6 +18,7 @@ import { action as logoutAction } from './pages/Logout';
 import { checkAuthLoader, tokenLoader } from './util/auth';
 import CreateAccountPage from './pages/CreateAccount';
 import ForumPage from "./pages/Forum";
+import History, { historyLoader } from "./pages/History";
 
 
 const router = createBrowserRouter([
@@ -87,6 +88,12 @@ const router = createBrowserRouter([
         path: "forum",
         element: <ForumPage />,
       },
+      {
+        path: "history",
+        element: <History />,
+        loader: historyLoader,
+      }
+
     ],
   },
 ]);

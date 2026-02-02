@@ -50,16 +50,15 @@ export function tokenLoader() {
 
 
 export function checkAuthLoader() {
-  // this function will be added in the next lecture
-  // make sure it looks like this in the end
   const token = getAuthToken();
-  
-  if (!token) {
-    return redirect('/auth');
-  }
- 
-  return null; 
-}
 
+  if (!token || token === "EXPIRED") {
+    localStorage.removeItem("token");
+    localStorage.removeItem("expiration");
+    return redirect("/auth");
+  }
+
+  return null;
+}
 
 

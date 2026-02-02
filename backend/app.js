@@ -11,6 +11,7 @@ const initDb = require("./db/initDb");
 const eventRoutes = require("./routes/events");
 const authRoutes = require("./routes/auth");
 const forumRoutes = require("./routes/forum");
+const historyRoutes = require("./routes/history");
 
 console.log("🔥 app.js started");
 
@@ -40,6 +41,7 @@ app.use((req, res, next) => {
 app.use("/auth", authRoutes);
 app.use("/events", eventRoutes);
 app.use("/forum", forumRoutes);
+app.use("/history", historyRoutes);
 
 
 

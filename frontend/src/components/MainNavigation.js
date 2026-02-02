@@ -62,7 +62,13 @@ function MainNavigation() {
           <li>
             <NavLink to="/forum">Forum</NavLink>
           </li>
-          )}      
+          )}
+          <li>
+            <NavLink to="/history" className={({ isActive }) => (isActive ? classes.active : undefined)}>
+              History
+            </NavLink>
+          </li>
+
         </ul>
       </nav>
       <NewsletterSignup />
