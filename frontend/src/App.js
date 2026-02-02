@@ -24,6 +24,9 @@ import HistoryModern, { historyModernLoader } from "./pages/HistoryModern";
 import ShiftSwapsPage, { loader as shiftSwapsLoader } from "./pages/ShiftSwaps/ShiftSwaps";
 import NewShiftSwapPage, { action as newShiftSwapAction } from "./pages/ShiftSwaps/NewShiftSwap";
 import ShiftSwapDetailsPage, { loader as shiftSwapDetailsLoader } from "./pages/ShiftSwaps/ShiftSwapDetails";
+import VerifyEmailPage from './pages/VerifyEmail';
+
+
 
 const router = createBrowserRouter([
   {
@@ -119,6 +122,11 @@ const router = createBrowserRouter([
             element: <ShiftSwapDetailsPage />,
             loader: shiftSwapDetailsLoader,
           },
+          {
+          path: 'verify-email',
+          element: <VerifyEmailPage />,
+          },
+
         ],
       },
 

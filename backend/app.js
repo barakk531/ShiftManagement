@@ -1,6 +1,10 @@
 
 
 require("dotenv").config();
+console.log("RESEND KEY EXISTS:", !!process.env.RESEND_API_KEY);
+console.log("RESEND KEY PREFIX:", (process.env.RESEND_API_KEY || "").slice(0, 3));
+console.log("RESEND KEY LENGTH:", (process.env.RESEND_API_KEY || "").length);
+console.log("KEY CHECK:", process.env.RESEND_API_KEY.slice(0, 8), process.env.RESEND_API_KEY.length);
 
 const express = require("express");
 const cors = require("cors");
@@ -15,6 +19,7 @@ const shiftSwapsRoutes = require("./routes/shiftSwaps");
 console.log("🔥 app.js started");
 
 const app = express();
+
 
 // Parse JSON bodies
 app.use(express.json());
