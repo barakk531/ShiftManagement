@@ -1,5 +1,5 @@
 
-import { Form, useNavigate, useNavigation, useActionData, redirect } from 'react-router-dom';
+import { Form, useNavigate, useNavigation, useActionData, redirect, json } from 'react-router-dom';
 import classes from './EventForm.module.css';
 import { getAuthToken } from '../util/auth';
 import { useMemo, useState } from 'react';
@@ -256,6 +256,13 @@ export async function action({ request, params }) {
   const image = data.get('image');
   const date = data.get('date');
   const description = data.get('description');
+  
+  if (!date) {
+    return json(
+      { errors: { date: 'Work Date is required.' } },
+      { status: 422 }
+    );
+  }
 
   const city = data.get('city') || '';
   const startTime = data.get('startTime') || '';

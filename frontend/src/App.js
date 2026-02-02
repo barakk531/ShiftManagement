@@ -7,7 +7,7 @@ import EventDetailPage, {
   action as deleteEventAction,
 } from './pages/EventDetail';
 import EventsPage, { loader as eventsLoader } from './pages/Events';
-import EventsRootLayout from './pages/EventsRoot';
+import EventsRootLayout, { eventsRootLoader } from './pages/EventsRoot';
 import HomePage from './pages/Home';
 import NewEventPage from './pages/NewEvent';
 import RootLayout from './pages/Root';
@@ -17,9 +17,13 @@ import AuthenticationPage, {action as authAction} from './pages/Authentication';
 import { action as logoutAction } from './pages/Logout';
 import { checkAuthLoader, tokenLoader } from './util/auth';
 import CreateAccountPage from './pages/CreateAccount';
-import ForumPage from "./pages/Forum";
+import ForumPage, { forumLoader } from "./pages/Forum";
 import History, { historyLoader } from "./pages/History";
+import HistoryModern, { historyModernLoader } from "./pages/HistoryModern";
 
+import ShiftSwapsPage, { loader as shiftSwapsLoader } from "./pages/ShiftSwaps/ShiftSwaps";
+import NewShiftSwapPage, { action as newShiftSwapAction } from "./pages/ShiftSwaps/NewShiftSwap";
+import ShiftSwapDetailsPage, { loader as shiftSwapDetailsLoader } from "./pages/ShiftSwaps/ShiftSwapDetails";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +37,7 @@ const router = createBrowserRouter([
       {
         path: 'events',
         element: <EventsRootLayout />,
+        loader: eventsRootLoader,
         children: [
           {
             index: true,
@@ -87,12 +92,35 @@ const router = createBrowserRouter([
       {
         path: "forum",
         element: <ForumPage />,
+        loader: forumLoader,
       },
       {
         path: "history",
+        element: <HistoryModern />,
+        loader: historyModernLoader,
+      },
+      {
+        path: "history-legacy",
         element: <History />,
         loader: historyLoader,
-      }
+      },
+      {
+        path: "shift-swaps",
+        element: <ShiftSwapsPage />,
+        loader: shiftSwapsLoader,
+        children: [
+          {
+            path: "new",
+            element: <NewShiftSwapPage />,
+            action: newShiftSwapAction,
+          },
+          {
+            path: ":id",
+            element: <ShiftSwapDetailsPage />,
+            loader: shiftSwapDetailsLoader,
+          },
+        ],
+      },
 
     ],
   },

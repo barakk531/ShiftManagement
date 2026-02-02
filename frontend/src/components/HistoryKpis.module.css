@@ -1,0 +1,46 @@
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 12px;
+  margin: 14px 0 16px;
+}
+
+@media (max-width: 900px) {
+  .kpis {
+    grid-template-columns: repeat(2, minmax(160px, 1fr));
+  }
+}
+
+.card {
+  padding: 14px 14px 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.16);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.25);
+  transform: translateY(0);
+  transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.22);
+}
+
+.label {
+  font-size: 12px;
+  opacity: 0.86;
+  margin-bottom: 8px;
+}
+
+.value {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.valueAccent {
+  font-size: 22px;
+  font-weight: 900;
+  color: #f3b54a;
+}

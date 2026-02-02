@@ -1,13 +1,19 @@
-import PageContent from '../components/PageContent';
+import HomeHero from "../components/HomeHero";
+import BackgroundStage from "../components/BackgroundStage";
 import { getUserFullName } from "../util/auth";
+import { getHomeBgStorageKey } from "../util/userBgKeys";
 
 function HomePage() {
   const fullName = getUserFullName();
 
   return (
-    <PageContent title={`Welcome${fullName ? ` ${fullName}` : ''}!`}>
-      <p>Browse all our amazing events!</p>
-    </PageContent>
+    <BackgroundStage
+      storageKey={getHomeBgStorageKey()}
+      title="Home background"
+      allowPicker={true}
+    >
+      <HomeHero fullName={fullName} />
+    </BackgroundStage>
   );
 }
 

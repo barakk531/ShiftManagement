@@ -2,16 +2,15 @@
 
 require("dotenv").config();
 
-
 const express = require("express");
 const cors = require("cors");
-
 const initDb = require("./db/initDb");
 
 const eventRoutes = require("./routes/events");
 const authRoutes = require("./routes/auth");
 const forumRoutes = require("./routes/forum");
 const historyRoutes = require("./routes/history");
+const shiftSwapsRoutes = require("./routes/shiftSwaps");
 
 console.log("🔥 app.js started");
 
@@ -42,6 +41,7 @@ app.use("/auth", authRoutes);
 app.use("/events", eventRoutes);
 app.use("/forum", forumRoutes);
 app.use("/history", historyRoutes);
+app.use("/shift-swaps", shiftSwapsRoutes);
 
 
 
@@ -55,15 +55,17 @@ app.use((error, req, res, next) => {
 
 // Init DB and then start server
 initDb()
-  .then(() => {
+  .then((pool) => {
     console.log("✅ Connected to MySQL");
+
+    app.locals.db = pool;
 
     app.listen(8080, () => {
       console.log("🚀 Server running on port 8080");
     });
   })
   .catch((err) => {
-    console.error("Failed to initialize DB:", err);
+    console.error("❌ Failed to init DB", err);
     process.exit(1);
   });
 
@@ -71,75 +73,19 @@ initDb()
 
 
 
-// const initDb = require("./db/initDb");
 
-// console.log('🔥 app.js started');
+// Init DB and then start server
+// initDb()
+//   .then(() => {
+//     console.log("✅ Connected to MySQL");
 
-// const bodyParser = require('body-parser');
-// const express = require('express');
-// const cors = require("cors");
-
-// const eventRoutes = require('./routes/events');
-// const authRoutes = require('./routes/auth');
-
-// const app = express();
-
-// app.use("/forum", require("./routes/forum"));
-
-// const pool = require('./db');
+//     app.listen(8080, () => {
+//       console.log("🚀 Server running on port 8080");
+//     });
+//   })
+//   .catch((err) => {
+//     console.error("Failed to initialize DB:", err);
+//     process.exit(1);
+//   });
 
 
-
-
-
-// app.use(cors({
-//   origin: "http://localhost:3000",
-//   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-//   allowedHeaders: ["Content-Type", "Authorization"],
-// }));
-
-// app.options("*", cors());
-
-
-// (async () => {
-//   try {
-//     const conn = await pool.getConnection();
-//     console.log('✅ Connected to MySQL');
-//     conn.release();
-//   } catch (err) {
-//     console.error('❌ MySQL connection failed:', err.message);
-//   }
-// })();
-
-
-// app.use(bodyParser.json());
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE');
-//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-//   next();
-// });
-
-// app.use(authRoutes);
-
-// app.use('/events', eventRoutes);
-
-// app.use((error, req, res, next) => {
-//   const status = error.status || 500;
-//   const message = error.message || 'Something went wrong.';
-//   res.status(status).json({ message: message });
-// });
-
-
-
-// initDb().catch(err => {
-//   console.error("Failed to initialize DB:", err);
-//   process.exit(1);
-// });
-
-
-// app.listen(8080, () => {
-//   console.log('🚀 Server running on port 8080');
-// });
-
-// // app.listen(8080);

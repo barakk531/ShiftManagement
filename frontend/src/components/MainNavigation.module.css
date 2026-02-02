@@ -4,11 +4,23 @@
   padding: 2rem;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+/* make nav take remaining width so the ul can stretch */
+.header nav {
+  flex: 1;
 }
 
 .list {
   display: flex;
+  align-items: center;
   gap: 1rem;
+
+  width: 100%;          /* critical */
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .list a {
@@ -20,3 +32,84 @@
 .list a.active {
   color: var(--color-primary-800);
 }
+
+/* push logout to the far right + add spacing from the right edge */
+.logoutItem {
+  margin-left: auto;
+  margin-right: 2rem;   /* increase to 3rem/4rem if you want “a lot” */
+}
+
+.logoutForm {
+  margin: 0;
+  display: inline;
+}
+
+/* override global button styling so it looks like nav link */
+.navButton {
+  font: inherit;
+  cursor: pointer;
+
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  color: var(--color-primary-400);
+}
+
+.navButton:hover {
+  color: var(--color-primary-800);
+}
+
+
+/* Hard reset for the logout container to avoid global "button card" styles */
+.logoutItem,
+.logoutForm,
+.logoutForm button {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Also remove any spacing that can make it look like a box */
+.logoutItem,
+.logoutForm {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Keep the right spacing you want */
+.logoutItem {
+  margin-left: auto !important;
+  margin-right: 2rem; /* adjust: 1rem / 3rem / 4rem */
+}
+
+/* Make sure the button behaves like a link */
+.navButton {
+  font: inherit;
+  cursor: pointer;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  color: var(--color-primary-400);
+}
+
+.navButton:hover {
+  color: var(--color-primary-800);
+}
+
+
+
+.shiftSwapsHeader {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 2rem;
+
+  background: radial-gradient(circle at 20% 10%, #6d28d9 0%, #2a0b5a 55%, #12002b 100%); 
+  border-bottom: 2px solid rgba(236, 225, 250, 0.6); 
+  box-shadow: none;
+}
+

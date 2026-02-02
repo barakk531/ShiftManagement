@@ -35,6 +35,15 @@
   font-size: 0.95rem;
 }
 
+.filterItem select option {
+  background: #2b2b2b;
+  color: #f4f4f4;
+}
+.filterItem select {
+  color-scheme: dark;
+}
+
+
 .filterItem select {
   background: #2b2b2b;
   color: #f4f4f4;

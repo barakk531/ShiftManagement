@@ -93,6 +93,14 @@ async function getEventByIdForUser(eventId, userId) {
  * CREATE new event for user
  */
 async function createEventForUser(data, userId) {
+
+  if (!data?.date || String(data.date).trim() === "") {
+    const err = new Error("Date is required.");
+    err.status = 422;
+    throw err;
+  }
+
+
   const id = crypto.randomUUID();
 
   await pool.query(
@@ -139,6 +147,13 @@ async function createEventForUser(data, userId) {
  * UPDATE event (user scoped)
  */
 async function updateEventForUser(eventId, data, userId) {
+
+  if (!data?.date || String(data.date).trim() === "") {
+  const err = new Error("Date is required.");
+  err.status = 422;
+  throw err;
+  }
+
   const [result] = await pool.query(
     `
     UPDATE events SET
@@ -177,6 +192,62 @@ async function updateEventForUser(eventId, data, userId) {
   return result.affectedRows > 0;
 }
 
+
+async function getEventsByUserForMonth(userId, year, month) {
+  const [rows] = await pool.query(
+    `
+    SELECT
+      id,
+      title,
+      description,
+      DATE_FORMAT(date, '%Y-%m-%d') AS date,
+      image,
+      city,
+      start_time,
+      end_time,
+      hourly_rate,
+      travel,
+      day_of_week,
+      hours_worked,
+      shift_total
+    FROM events
+    WHERE user_id = ?
+      AND YEAR(date) = ?
+      AND MONTH(date) = ?
+    ORDER BY date DESC, created_at DESC
+    `,
+    [userId, year, month]
+  );
+
+  return rows.map(mapEventRow);
+}
+
+async function getMonthlySummaryForUser(userId, year, month) {
+  const [rows] = await pool.query(
+    `
+    SELECT
+      COUNT(*) AS shiftsCount,
+      COALESCE(SUM(hours_worked), 0) AS hoursWorked,
+      COALESCE(SUM(travel), 0) AS travel,
+      COALESCE(SUM(shift_total), 0) AS shiftTotal
+    FROM events
+    WHERE user_id = ?
+      AND YEAR(date) = ?
+      AND MONTH(date) = ?
+    `,
+    [userId, year, month]
+  );
+
+  const r = rows?.[0] || {};
+  return {
+    shiftsCount: Number(r.shiftsCount || 0),
+    hoursWorked: Number(r.hoursWorked || 0),
+    travel: Number(r.travel || 0),
+    shiftTotal: Number(r.shiftTotal || 0),
+  };
+}
+
+
 /**
  * DELETE event (user scoped)
  */
@@ -194,6 +265,8 @@ module.exports = {
   getEventByIdForUser,
   createEventForUser,
   updateEventForUser,
+  getEventsByUserForMonth,
+  getMonthlySummaryForUser,
   deleteEventForUser,
 };
 

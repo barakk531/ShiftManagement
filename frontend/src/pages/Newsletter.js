@@ -1,10 +1,14 @@
-import NewsletterSignup from '../components/NewsletterSignup';
+import AccountWidget from '../components/AccountWidget';
 import PageContent from '../components/PageContent';
+import ReferralWidget from "../components/ReferralWidget";
+
+const token = localStorage.getItem("token");
 
 function NewsletterPage() {
   return (
-    <PageContent title="Join our awesome newsletter!">
-      <NewsletterSignup />
+    <PageContent title="Join our awesome App today!">
+      {token && <AccountWidget />}
+      <ReferralWidget />
     </PageContent>
   );
 }

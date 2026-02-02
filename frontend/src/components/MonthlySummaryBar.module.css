@@ -1,0 +1,25 @@
+.summaryBar {
+  display: flex;
+  gap: 14px;
+  margin: 6px 0 18px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.summaryItem {
+  background: #2f2f2f;
+  border-radius: 10px;
+  padding: 12px 16px;
+  min-width: 140px;
+}
+
+.summaryLabel {
+  font-size: 12px;
+  opacity: 0.85;
+  margin-bottom: 6px;
+}
+
+.summaryValue {
+  font-size: 20px;
+  font-weight: 700;
+}
