@@ -1,49 +1,63 @@
-import { Suspense } from 'react';
-import { useLoaderData, json, defer, Await } from 'react-router-dom';
+// src/pages/Events.js
+import { useLoaderData, redirect } from "react-router-dom";
+import EventsList from "../components/EventsList";
 
-import EventsList from '../components/EventsList';
+const API_BASE_URL = "http://localhost:8080";
 
-function EventsPage() {
-  const { events } = useLoaderData();
+async function loadEvents(token) {
+  const response = await fetch(`${API_BASE_URL}/events`, {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
 
-  return (
-    <Suspense fallback={<p style={{ textAlign: 'center' }}>Loading...</p>}>
-      <Await resolve={events}>
-        {(loadedEvents) => <EventsList events={loadedEvents} />}
-      </Await>
-    </Suspense>
-  );
-}
-
-export default EventsPage;
-
-async function loadEvents() {
-  const response = await fetch('http://localhost:8080/events');
+  if (response.status === 401) {
+    // token missing/expired/invalid
+    throw new Response(JSON.stringify({ message: "Not authenticated." }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 
   if (!response.ok) {
-    // return { isError: true, message: 'Could not fetch events.' };
-    // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
-    //   status: 500,
-    // });
-    const data = await response.json();
-    throw new Response(
-    JSON.stringify({ message: data.message || 'Could not fetch event.' }),
-    { status: response.status });
-  } else {
-    const resData = await response.json();
-    return resData.events;
+    let message = "Could not fetch events.";
+    try {
+      const data = await response.json();
+      message = data?.message || message;
+    } catch (_) {
+      // ignore JSON parse errors
+    }
+
+    throw new Response(JSON.stringify({ message }), {
+      status: response.status,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  const resData = await response.json();
+  return resData.events || [];
+}
+
+export async function loader() {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return redirect("/auth?mode=login");
+  }
+
+  try {
+    const events = await loadEvents(token);
+    return { events };
+  } catch (err) {
+    // If backend returned 401, send user to login
+    if (err instanceof Response && err.status === 401) {
+      return redirect("/auth?mode=login");
+    }
+    throw err;
   }
 }
 
-// export function loader() {
-//   return defer({
-//     events: loadEvents(),
-//   });
-// }
-
-export async function loader({ params }) {
-  return {
-    // event: loadEvent(params.eventId),
-    events: loadEvents(),
-  };
+export default function EventsPage() {
+  const { events } = useLoaderData();
+  return <EventsList events={events} />;
 }

@@ -20,7 +20,7 @@ import './Signup.css';
       errors.push('Invalid email address.');
     }
 
-    if (!isNotEmpty(password) || !hasMinLength(password, 8)) {
+    if (!isNotEmpty(password) || !hasMinLength(password, 6)) {
       errors.push('You must provide a password with at least six characters.');
     }
 

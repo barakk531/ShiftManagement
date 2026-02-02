@@ -43,8 +43,44 @@ async function createUser(userData) {
         ]
     );
 
-    return { id, email };
+  return {
+    id,
+    email,
+    firstName: userData.firstName || '',
+    lastName: userData.lastName || '',
+  };
     
+  } finally {
+    connection.release();
+  }
+}
+
+
+async function getUserByEmail(email) {
+  const connection = await pool.getConnection();
+
+  try {
+    const [rows] = await connection.execute(
+      `SELECT id, email, password_hash, first_name, last_name
+       FROM users
+       WHERE email = ?
+       LIMIT 1`,
+      [email]
+    );
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    const user = rows[0];
+
+    return {
+      id: user.id,
+      email: user.email,
+      passwordHash: user.password_hash,
+      firstName: user.first_name,
+      lastName: user.last_name,
+    };
   } finally {
     connection.release();
   }
@@ -53,7 +89,8 @@ async function createUser(userData) {
 
 
 
-
 module.exports = {
   createUser,
+  getUserByEmail,
+
 };

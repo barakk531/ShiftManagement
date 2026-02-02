@@ -3,8 +3,8 @@
 
 const express = require('express');
 // const { add, get } = require('../data/user');
-const { get } = require('../data/user'); 
-const { createUser } = require('../services/userService');
+// const { get } = require('../data/user'); 
+const { createUser, getUserByEmail } = require('../services/userService');
 
 
 const { createJSONToken, isValidPassword } = require('../util/auth');
@@ -53,7 +53,9 @@ router.post('/signup', async (req, res, next) => {
       terms: data.terms,
       acquisition: data.acquisition,
     });
-    const authToken = createJSONToken(createdUser.email);
+
+
+    const authToken = createJSONToken(createdUser);
     res
       .status(201)
       .json({ message: 'User created.', user: createdUser, token: authToken });
@@ -69,29 +71,71 @@ router.post('/signup', async (req, res, next) => {
 
 });
 
+// router.post('/login', async (req, res) => {
+//   const email = req.body.email;
+//   const password = req.body.password;
+
+
+//   let user;
+
+//   try {
+//     user = await get(email);
+//     console.log("LOGIN email:", email);
+//     console.log("LOGIN user:", user);
+//     console.log("LOGIN user.password:", user.password);
+
+//     console.log("LOGIN USER:", user);
+//     console.log("LOGIN user.firstName:", user.firstName, "user.lastName:", user.lastName);
+//   } catch (error) {
+//     return res.status(401).json({ message: 'Authentication failed.' });
+//   }
+
+//   const pwIsValid = await isValidPassword(password, user.password);
+//   if (!pwIsValid) {
+//     return res.status(422).json({
+//       message: 'Invalid credentials.',
+//       errors: { credentials: 'Invalid email or password entered.' },
+//     });
+//   }
+
+// const token = createJSONToken({
+//   email: user.email,
+//   firstName: user.firstName,
+//   lastName: user.lastName,
+// });
+
+
+//   res.json({ token });
+// });
+
 router.post('/login', async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  let user;
   try {
-    user = await get(email);
-  } catch (error) {
-    return res.status(401).json({ message: 'Authentication failed.' });
-  }
+    const user = await getUserByEmail(email); // <-- MySQL
 
-  const pwIsValid = await isValidPassword(password, user.password);
-  if (!pwIsValid) {
-    return res.status(422).json({
-      message: 'Invalid credentials.',
-      errors: { credentials: 'Invalid email or password entered.' },
+    if (!user) {
+      return res.status(401).json({ message: 'Authentication failed.' });
+    }
+
+    const passwordOk = await isValidPassword(password, user.passwordHash);
+    if (!passwordOk) {
+      return res.status(401).json({ message: 'Authentication failed.' });
+    }
+
+    const token = createJSONToken({
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
     });
+
+    res.json({ token });
+  } catch (err) {
+    return res.status(500).json({ message: 'Login failed.' });
   }
-
-  const token = createJSONToken(email);
-  res.json({ token });
 });
-
 
 
 module.exports = router;

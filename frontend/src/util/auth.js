@@ -1,7 +1,23 @@
 import { redirect } from 'react-router-dom';
 
 
-//org
+
+export function getUserFullName() {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const { firstName, lastName } = payload;
+    if (!firstName || !lastName) return null;
+    return `${firstName} ${lastName}`;
+  } catch {
+    return null;
+  }
+}
+
+
+
 export function getTokenDuration() {
     const storedExpirationDate = localStorage.getItem('expiration');
     const expirationDate = new Date(storedExpirationDate);
@@ -11,7 +27,6 @@ export function getTokenDuration() {
 }
 
 
-//org
 export function getAuthToken() {
   const token = localStorage.getItem('token');
   

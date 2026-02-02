@@ -1,4 +1,5 @@
 
+const initDb = require("./db/initDb");
 
 console.log('🔥 app.js started');
 
@@ -44,6 +45,10 @@ app.use((error, req, res, next) => {
 
 
 
+initDb().catch(err => {
+  console.error("Failed to initialize DB:", err);
+  process.exit(1);
+});
 
 
 app.listen(8080, () => {
