@@ -44,6 +44,7 @@ function getUserFromToken() {
 export default function AccountWidget() {
   const location = useLocation();
   const hideOnShiftSwaps = location.pathname.startsWith("/shift-swaps");
+  const hideAccountWidget = location.pathname.startsWith("/submission-shifts");
 
   const user = useMemo(() => getUserFromToken(), []);
   const [avatar, setAvatar] = useState(null);
@@ -54,7 +55,8 @@ export default function AccountWidget() {
     if (savedAvatar) setAvatar(savedAvatar);
   }, [hideOnShiftSwaps]);
 
-  if (hideOnShiftSwaps) {
+  // Not rendering this AccountWidget
+  if (hideOnShiftSwaps || hideAccountWidget) {
     return null;
   }
 

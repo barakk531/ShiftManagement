@@ -1,42 +1,48 @@
 
 
-const pool = require('../db');
-const bcrypt = require('bcryptjs');
-const crypto = require('crypto');
+
+
+const pool = require("../db");
+const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 async function createUser(userData) {
-  console.log('🧠 createUser() called with:', userData.email);
+  console.log("🧠 createUser() called with:", userData.email);
 
   const { email, password } = userData;
 
-  if (!email) throw new Error('Email is required');
-  if (!password) throw new Error('Password is required');
+  if (!email) throw new Error("Email is required");
+  if (!password) throw new Error("Password is required");
 
   const connection = await pool.getConnection();
 
   try {
-    const [rows] = await connection.execute(
-      'SELECT id FROM users WHERE email = ?',
-      [email]
-    );
+    const [rows] = await connection.execute("SELECT id FROM users WHERE email = ?", [email]);
 
     if (rows.length > 0) {
-      throw new Error('User with this email already exists');
+      throw new Error("User with this email already exists");
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
     const id = crypto.randomUUID();
 
+    const role =
+      userData.role === "admin" || userData.role === "worker" ? userData.role : "worker";
+
     await connection.execute(
-      `INSERT INTO users (id, email, password_hash, first_name, last_name, role, terms, acquisition)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      `
+      INSERT INTO users
+        (id, email, password_hash, first_name, last_name, role, terms, acquisition, active_workspace_id)
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, NULL)
+      `,
       [
         id,
         email,
         hashedPassword,
-        userData.firstName || '',
-        userData.lastName || '',
-        userData.role || 'Student',
+        userData.firstName || "",
+        userData.lastName || "",
+        role,
         userData.terms ? 1 : 0,
         JSON.stringify(userData.acquisition || []),
       ]
@@ -45,34 +51,39 @@ async function createUser(userData) {
     return {
       id,
       email,
-      firstName: userData.firstName || '',
-      lastName: userData.lastName || '',
+      firstName: userData.firstName || "",
+      lastName: userData.lastName || "",
+      role,
+      activeWorkspaceId: null,
     };
   } finally {
     connection.release();
   }
 }
 
-
 async function getUserByEmail(email) {
   const connection = await pool.getConnection();
 
   try {
     const [rows] = await connection.execute(
-      `SELECT
-          id,
-          email,
-          password_hash,
-          first_name,
-          last_name,
-          email_verified,
-          email_verification_code_hash,
-          email_verification_expires_at,
-          password_reset_code_hash,
-          password_reset_expires_at
-       FROM users
-       WHERE email = ?
-       LIMIT 1`,
+      `
+      SELECT
+        id,
+        email,
+        password_hash,
+        first_name,
+        last_name,
+        role,
+        active_workspace_id,
+        email_verified,
+        email_verification_code_hash,
+        email_verification_expires_at,
+        password_reset_code_hash,
+        password_reset_expires_at
+      FROM users
+      WHERE email = ?
+      LIMIT 1
+      `,
       [email]
     );
 
@@ -86,6 +97,9 @@ async function getUserByEmail(email) {
       passwordHash: user.password_hash,
       firstName: user.first_name,
       lastName: user.last_name,
+      role: user.role,
+      activeWorkspaceId: user.active_workspace_id ?? null,
+
       emailVerified: user.email_verified,
 
       emailVerificationCodeHash: user.email_verification_code_hash,
@@ -98,7 +112,6 @@ async function getUserByEmail(email) {
     connection.release();
   }
 }
-
 
 // Email verification: store code hash + expiry
 async function setEmailVerification(userId, codeHash, expiresAt) {
@@ -149,66 +162,54 @@ module.exports = {
 
 
 
-
-
-
-
-
-
-
-
-
 // const pool = require('../db');
 // const bcrypt = require('bcryptjs');
 // const crypto = require('crypto');
 
-
-
 // async function createUser(userData) {
-//     console.log('🧠 createUser() called with:', userData.email);
+//   console.log('🧠 createUser() called with:', userData.email);
 
-//     const { email, password } = userData;
+//   const { email, password } = userData;
 
-//     if (!email) throw new Error('Email is required');
-//     if (!password) throw new Error('Password is required');
+//   if (!email) throw new Error('Email is required');
+//   if (!password) throw new Error('Password is required');
 
-//     const connection = await pool.getConnection();
+//   const connection = await pool.getConnection();
 
-//     try {
+//   try {
 //     const [rows] = await connection.execute(
-//         'SELECT id FROM users WHERE email = ?',
-//         [email]
+//       'SELECT id FROM users WHERE email = ?',
+//       [email]
 //     );
 
 //     if (rows.length > 0) {
-//         throw new Error('User with this email already exists');
+//       throw new Error('User with this email already exists');
 //     }
 
 //     const hashedPassword = await bcrypt.hash(password, 12);
 //     const id = crypto.randomUUID();
 
 //     await connection.execute(
-//         `INSERT INTO users (id, email, password_hash, first_name, last_name, role, terms, acquisition)
-//         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-//         [
+//       `INSERT INTO users (id, email, password_hash, first_name, last_name, role, terms, acquisition)
+//        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+//       [
 //         id,
 //         email,
 //         hashedPassword,
 //         userData.firstName || '',
 //         userData.lastName || '',
-//         userData.role || 'Student',
+//         (userData.role === 'admin' || userData.role === 'worker') ? userData.role : 'worker',
 //         userData.terms ? 1 : 0,
 //         JSON.stringify(userData.acquisition || []),
-//         ]
+//       ]
 //     );
 
-//   return {
-//     id,
-//     email,
-//     firstName: userData.firstName || '',
-//     lastName: userData.lastName || '',
-//   };
-    
+//     return {
+//       id,
+//       email,
+//       firstName: userData.firstName || '',
+//       lastName: userData.lastName || '',
+//     };
 //   } finally {
 //     connection.release();
 //   }
@@ -220,16 +221,25 @@ module.exports = {
 
 //   try {
 //     const [rows] = await connection.execute(
-//       `SELECT id, email, password_hash, first_name, last_name
+//       `SELECT
+//           id,
+//           email,
+//           password_hash,
+//           first_name,
+//           last_name,
+//           role,
+//           email_verified,
+//           email_verification_code_hash,
+//           email_verification_expires_at,
+//           password_reset_code_hash,
+//           password_reset_expires_at
 //        FROM users
 //        WHERE email = ?
 //        LIMIT 1`,
 //       [email]
 //     );
 
-//     if (rows.length === 0) {
-//       return null;
-//     }
+//     if (rows.length === 0) return null;
 
 //     const user = rows[0];
 
@@ -239,6 +249,14 @@ module.exports = {
 //       passwordHash: user.password_hash,
 //       firstName: user.first_name,
 //       lastName: user.last_name,
+//       role: user.role,
+//       emailVerified: user.email_verified,
+
+//       emailVerificationCodeHash: user.email_verification_code_hash,
+//       emailVerificationExpiresAt: user.email_verification_expires_at,
+
+//       passwordResetCodeHash: user.password_reset_code_hash,
+//       passwordResetExpiresAt: user.password_reset_expires_at,
 //     };
 //   } finally {
 //     connection.release();
@@ -246,26 +264,56 @@ module.exports = {
 // }
 
 
-// // email Verification
+// // Email verification: store code hash + expiry
 // async function setEmailVerification(userId, codeHash, expiresAt) {
-//   const db = require('../db');
-//   await db.query(
-//     `
-//     UPDATE users
-//     SET email_verification_code_hash = ?,
-//         email_verification_expires_at = ?,
-//         email_verified = 0
-//     WHERE id = ?
-//     `,
-//     [codeHash, expiresAt, userId]
-//   );
+//   const connection = await pool.getConnection();
+//   try {
+//     await connection.execute(
+//       `
+//       UPDATE users
+//       SET email_verification_code_hash = ?,
+//           email_verification_expires_at = ?,
+//           email_verified = 0
+//       WHERE id = ?
+//       `,
+//       [codeHash, expiresAt, userId]
+//     );
+//   } finally {
+//     connection.release();
+//   }
 // }
 
-
+// // Email verification: mark verified + clear code
+// async function verifyUserEmail(userId) {
+//   const connection = await pool.getConnection();
+//   try {
+//     await connection.execute(
+//       `
+//       UPDATE users
+//       SET email_verified = 1,
+//           email_verification_code_hash = NULL,
+//           email_verification_expires_at = NULL
+//       WHERE id = ?
+//       `,
+//       [userId]
+//     );
+//   } finally {
+//     connection.release();
+//   }
+// }
 
 // module.exports = {
 //   createUser,
 //   getUserByEmail,
 //   setEmailVerification,
-
+//   verifyUserEmail,
 // };
+
+
+
+
+
+
+
+
+

@@ -7,6 +7,15 @@ function MainNavigation() {
   const token = useRouteLoaderData('root');
   const location = useLocation();
   const isShiftSwaps = location.pathname.startsWith("/shift-swaps");
+  const hideAccountWidget = location.pathname.startsWith("/submission-shifts");
+
+  let role = null;
+  if (token && token !== "EXPIRED") {
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      role = payload.role;
+    } catch {}
+  }
 
   return (
     <header className={`${classes.header} ${isShiftSwaps ? classes.shiftSwapsHeader : ""}`}>
@@ -67,6 +76,49 @@ function MainNavigation() {
           <li>
             <NavLink to="/shift-swaps">Shift-Swap</NavLink>
           </li>
+
+          {/* submission-shifts */}
+          <li>
+            <NavLink to="/submission-shifts/my-workspace">My Workspace</NavLink>
+          </li>
+
+          {role === "worker" && (
+            <li>
+              <NavLink to="/submission-shifts/select-workspace">Select Workspace</NavLink>
+            </li>
+          )}
+          {role === "worker" && (
+            <li>
+              <NavLink to="/submission-shifts/submit-availability">
+                Submit Availability
+              </NavLink>
+            </li>
+          )}
+          {role === "admin" && (
+            <li>
+              <NavLink to="/submission-shifts/admin/create-workspace">Create Workspace</NavLink>
+            </li>
+          )}
+          {role === "admin" && (
+            <li>
+              <NavLink to="/submission-shifts/admin/schedule-builder">
+                Weekly Scheduler
+              </NavLink>
+            </li>
+          )}
+          {role === "admin" && (
+            <li>
+              <NavLink to="/submission-shifts/admin/schedule-board">
+                Schedule Board
+              </NavLink>
+            </li>
+          )}
+          <li>
+            <NavLink to="/submission-shifts/published-schedule">
+              Published Shifts
+            </NavLink>
+          </li>
+
           {token && (
             <li className={classes.logoutItem}>
               <Form action="/logout" method="post" className={classes.logoutForm}>
@@ -77,10 +129,11 @@ function MainNavigation() {
             </li>
           )}
 
+
         </ul>
 
       </nav>
-      {token && <AccountWidget />}
+      {token && !hideAccountWidget && <AccountWidget />}
     </header>
   );
 }

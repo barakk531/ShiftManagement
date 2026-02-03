@@ -1,0 +1,137 @@
+
+/* // without CSS looks ok */
+
+
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.subTitle {
+  margin-top: 6px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  opacity: 0.9;
+}
+
+.input {
+  border-radius: 10px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+}
+
+.btn {
+  border-radius: 10px;
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  cursor: pointer;
+}
+
+.stats {
+  display: flex;
+  gap: 10px;
+}
+
+.statCard {
+  border-radius: 14px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.04);
+  min-width: 160px;
+}
+
+.statLabel {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.statValue {
+  margin-top: 6px;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.content {
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.error {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 120, 120, 0.35);
+  background: rgba(255, 120, 120, 0.12);
+}
+
+.loading {
+  opacity: 0.8;
+}
+
+
+
+
+
+
+
+
+
+
+.layout {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+}
+
+
+
+
+
+
+
+/* Orange action button (matches top bar vibe) */
+.publishBtn {
+  background: #ff8a00;
+  color: #111;
+  border: 1px solid rgba(255, 138, 0, 0.5);
+}
+
+.publishBtn:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.publishBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Optional: different look when already published */
+.unpublishBtn {
+  background: transparent;
+  color: #ff8a00;
+  border: 1px solid rgba(255, 138, 0, 0.6);
+}

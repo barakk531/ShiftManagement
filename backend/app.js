@@ -16,6 +16,13 @@ const forumRoutes = require("./routes/forum");
 const historyRoutes = require("./routes/history");
 const shiftSwapsRoutes = require("./routes/shiftSwaps");
 
+const workspaceRoutes = require("./routes/workspaces");
+const availabilityRoutes = require("./routes/availability");
+const shiftTemplatesRoutes = require("./routes/shiftTemplatesRoutes");
+const dailyShiftTemplatesRoutes = require("./routes/dailyShiftTemplatesRoutes");
+const adminScheduleRouter = require("./routes/adminSchedule");
+const publishedScheduleRoutes = require("./routes/publishedSchedule");
+
 console.log("🔥 app.js started");
 
 const app = express();
@@ -47,6 +54,12 @@ app.use("/events", eventRoutes);
 app.use("/forum", forumRoutes);
 app.use("/history", historyRoutes);
 app.use("/shift-swaps", shiftSwapsRoutes);
+app.use("/workspaces", workspaceRoutes);
+app.use("/availability", availabilityRoutes);
+app.use("/shift-templates", shiftTemplatesRoutes);
+app.use("/daily-shifts", dailyShiftTemplatesRoutes);
+app.use("/admin/schedule", adminScheduleRouter);
+app.use("/published-schedule", publishedScheduleRoutes);
 
 
 
@@ -75,22 +88,5 @@ initDb()
   });
 
 
-
-
-
-
-// Init DB and then start server
-// initDb()
-//   .then(() => {
-//     console.log("✅ Connected to MySQL");
-
-//     app.listen(8080, () => {
-//       console.log("🚀 Server running on port 8080");
-//     });
-//   })
-//   .catch((err) => {
-//     console.error("Failed to initialize DB:", err);
-//     process.exit(1);
-//   });
 
 

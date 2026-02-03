@@ -1,0 +1,214 @@
+.panel {
+  width: 340px;
+  min-width: 340px;
+  max-width: 340px;
+  border-radius: 14px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: fit-content;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.btn {
+  border-radius: 10px;
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.summaryRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.summaryCard {
+  border-radius: 12px;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.summaryLabel {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.summaryValue {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+}
+
+.search {
+  flex: 1;
+  border-radius: 10px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+}
+
+.select {
+  width: 120px;
+  border-radius: 10px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+}
+
+.error {
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 120, 120, 0.35);
+  background: rgba(255, 120, 120, 0.12);
+}
+
+.loading {
+  opacity: 0.8;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 520px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border-radius: 12px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.nameCol {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.name {
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.badgeOk,
+.badgeWarn,
+.badgeNeutral {
+  font-size: 11px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.badgeOk {
+  opacity: 1;
+}
+
+.badgeWarn {
+  opacity: 1;
+}
+
+.badgeNeutral {
+  opacity: 0.9;
+}
+
+.rightCol {
+  display: flex;
+  align-items: center;
+}
+
+.id {
+  font-size: 11px;
+  opacity: 0.7;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty {
+  font-size: 12px;
+  opacity: 0.8;
+  padding: 8px 4px;
+}
+
+
+/* Ensure dropdown options text is readable */
+.filterSelect option {
+  color: #111;
+  background: #fff;
+}
+
+/* Select (closed state) */
+.filterSelect {
+  background: #0f0f0f;
+  color: #f5f5f5;
+  border: 1px solid #333;
+}
+
+/* Dropdown options (open state) */
+.filterSelect option {
+  background: #0f0f0f;
+  color: #f5f5f5;
+}
+
+.filterSelect:focus {
+  background: #0f0f0f;
+  color: #f5f5f5;
+}
+
+.select {
+  background: solid #333;
+  color: #f5f5f5;
+  border: 1px solid #333;
+}
+
+.select option {
+  color: #111;      /* readable on forced-white dropdown */
+  background: #fff; /* matches forced dropdown */
+}

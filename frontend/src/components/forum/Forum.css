@@ -444,3 +444,436 @@ form textarea {
   width: 14px;
   height: 14px;
 }
+
+
+
+
+
+
+
+
+/*
+
+/* src/components/forum/Forum.css 
+/* Forum-only "Neon Mint" theme + scoped forum component styles 
+
+html, body { height: 100%; }
+/* Ultra-strong forum background override 
+body.forum-theme{
+  background-color: #020304 !important;
+  background-image:
+    radial-gradient(1600px 980px at 10% 14%, rgba(34, 197, 94, 0.98) 0%, rgba(0,0,0,0) 52%),
+    radial-gradient(1400px 900px at 92% 14%, rgba(255, 255, 255, 0.55) 0%, rgba(0,0,0,0) 50%),
+    radial-gradient(1600px 1100px at 55% 118%, rgba(16, 185, 129, 0.85) 0%, rgba(0,0,0,0) 52%),
+    radial-gradient(1200px 860px at 74% 52%, rgba(34, 211, 238, 0.45) 0%, rgba(0,0,0,0) 48%),
+    radial-gradient(1200px 800px at 40% 40%, rgba(34, 197, 94, 0.35) 0%, rgba(0,0,0,0) 55%),
+    linear-gradient(180deg, #000000 0%, #050809 45%, #000000 100%) !important;
+
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
+/* Put the theme pseudo-elements above any wrapper backgrounds 
+body.forum-theme::before,
+body.forum-theme::after{
+  z-index: 0 !important;
+}
+
+/* Ensure app content stays above the pseudo-elements
+body.forum-theme #root{
+  position: relative;
+  z-index: 1 !important;
+}
+
+/* Strong grain 
+body.forum-theme::before{
+  opacity: 0.55 !important;
+  filter: blur(0px) !important;
+}
+
+/* Strong sweep 
+body.forum-theme::after{
+  opacity: 1 !important;
+  filter: blur(8px) !important;
+}
+
+
+@keyframes neonSweep{
+  0%   { transform: translateX(-16%) translateY(-10%) rotate(0.2deg); opacity: 0.62; }
+  50%  { transform: translateX(8%)   translateY(6%)   rotate(-0.2deg); opacity: 0.90; }
+  100% { transform: translateX(-16%) translateY(-10%) rotate(0.2deg); opacity: 0.62; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  body.forum-theme::after{ animation: none; }
+}
+
+/* ===== Forum layout ===== 
+.forum-container{
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 36px 20px 60px;
+}
+
+/* ===== Titles ===== 
+.forum-title,
+.forum-subtitle{
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  margin: 0 0 18px 0;
+}
+
+.forum-title{
+  font-size: 28px;
+}
+
+.forum-subtitle{
+  font-size: 22px;
+  margin-top: 36px;
+}
+
+/* ===== Form card ===== 
+.forum-container section{
+  background: var(--card);
+  border: 1px solid var(--cardBorder);
+  border-radius: 18px;
+  padding: 18px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+}
+
+/* ===== Labels & inputs ===== 
+.forum-container label{
+  display: block;
+  margin: 14px 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.75);
+}
+
+.forum-container input,
+.forum-container textarea{
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.28);
+  color: var(--text);
+  outline: none;
+  transition: border-color 140ms ease, background 140ms ease, transform 140ms ease;
+}
+
+.forum-container textarea{
+  min-height: 120px;
+  resize: vertical;
+}
+
+.forum-container input:focus,
+.forum-container textarea:focus{
+  border-color: rgba(34,197,94,0.55);
+  background: rgba(0,0,0,0.34);
+}
+
+.forum-container input::placeholder,
+.forum-container textarea::placeholder{
+  color: rgba(255,255,255,0.45);
+}
+
+/* ===== Submit button ===== 
+.forum-container button[type="submit"]{
+  margin-top: 14px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(34,197,94,0.55);
+  background: rgba(34,197,94,0.18);
+  color: rgba(255,255,255,0.92);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease, opacity 120ms ease;
+}
+
+.forum-container button[type="submit"]:hover{
+  transform: translateY(-1px);
+  background: rgba(34,197,94,0.22);
+  border-color: rgba(34,197,94,0.70);
+}
+
+.forum-container button[type="submit"]:disabled{
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ===== Opinions list =====
+#opinions ul{
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+}
+
+#opinions li{
+  margin: 14px 0;
+}
+
+/* ===== Opinion card ===== 
+.opinion{
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 18px;
+  padding: 18px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.28);
+}
+
+.opinion .post-title{
+  margin: 0 0 6px 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.95);
+}
+
+.opinion .sharedBy{
+  margin: 0 0 14px 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.opinion .post-content{
+  margin: 0 0 14px 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.88);
+}
+
+/* ===== Vote controls ===== 
+.votes.vote-container{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.votes.vote-container span{
+  font-weight: 800;
+  color: rgba(34,197,94,0.95);
+}
+
+.votes.vote-container .vote-btn{
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.22);
+  color: rgba(255,255,255,0.85);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease, opacity 120ms ease;
+}
+
+.votes.vote-container .vote-btn:hover{
+  transform: translateY(-1px);
+  background: rgba(0,0,0,0.30);
+  border-color: rgba(34,197,94,0.35);
+}
+
+.votes.vote-container .vote-btn:disabled{
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.votes.vote-container .vote-btn svg{
+  width: 16px;
+  height: 16px;
+}
+
+/* Force forum background to stay visible 
+body.forum-theme,
+body.forum-theme #root {
+  background: transparent !important;
+}
+
+/* Common app wrappers that often paint a page background 
+body.forum-theme main,
+body.forum-theme .main,
+body.forum-theme .content,
+body.forum-theme .page,
+body.forum-theme .pageContent,
+body.forum-theme .container,
+body.forum-theme .app,
+body.forum-theme .appContainer {
+  background: transparent !important;
+}
+
+/* If you have a layout card/wrapper around pages 
+body.forum-theme .layout,
+body.forum-theme .layoutContent,
+body.forum-theme .shell {
+  background: transparent !important;
+}
+
+
+
+/* User Opinion text color override only 
+body.forum-theme .opinion {
+  color: rgba(0, 0, 0, 0.82);
+}
+
+body.forum-theme .opinion .post-title {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+body.forum-theme .opinion .sharedBy {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+body.forum-theme .opinion .post-content {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+/* Votes text inside opinion 
+body.forum-theme .opinion .votes,
+body.forum-theme .opinion .votes span {
+  color: rgba(0, 0, 0, 0.75);
+}
+
+*/
+
+
+/* ===============================
+   Forum Background – "Deep Ocean Aurora"
+   Bold • Colorful • Unique (new palette)
+   Background-only (no UI changes)
+   =============================== */
+
+html body.forum-theme{
+  background-color: #061018 !important;
+
+  background-image:
+    /* Big ocean aurora blobs (new colors) */
+    radial-gradient(920px 640px at 16% 18%, rgba(0, 255, 170, 0.32) 0%, rgba(0,0,0,0) 62%),
+    radial-gradient(980px 720px at 86% 16%, rgba(0, 140, 255, 0.30) 0%, rgba(0,0,0,0) 60%),
+    radial-gradient(1050px 820px at 56% 118%, rgba(255, 230, 0, 0.18) 0%, rgba(0,0,0,0) 64%),
+    radial-gradient(980px 700px at 72% 54%, rgba(255, 94, 58, 0.20) 0%, rgba(0,0,0,0) 64%),
+
+    /* Clean diagonal ribbons */
+    repeating-linear-gradient(
+      135deg,
+      rgba(255,255,255,0.040) 0px,
+      rgba(255,255,255,0.040) 2px,
+      transparent 2px,
+      transparent 38px
+    ),
+
+    /* Micro grid */
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
+
+    /* Vignette */
+    radial-gradient(circle at 50% 120%,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,0.50) 68%,
+      rgba(0,0,0,0.88) 100%
+    ) !important;
+
+  background-size:
+    920px 640px,
+    980px 720px,
+    1050px 820px,
+    980px 700px,
+    360px 360px,
+    48px 48px,
+    48px 48px,
+    1400px 1000px !important;
+
+  background-position:
+    16% 18%,
+    86% 16%,
+    56% 118%,
+    72% 54%,
+    0 0,
+    0 0,
+    0 0,
+    50% 50% !important;
+
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat, no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+/* Fine sparkles */
+html body.forum-theme::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  background-image:
+    radial-gradient(circle at 14% 22%, rgba(255,255,255,0.12) 0 1px, transparent 2px),
+    radial-gradient(circle at 72% 18%, rgba(255,255,255,0.10) 0 1px, transparent 2px),
+    radial-gradient(circle at 44% 62%, rgba(255,255,255,0.08) 0 1px, transparent 2px),
+    radial-gradient(circle at 88% 78%, rgba(255,255,255,0.10) 0 1px, transparent 2px);
+
+  background-size: 240px 240px, 300px 300px, 360px 360px, 420px 420px;
+  opacity: 0.32;
+  mix-blend-mode: overlay;
+  filter: blur(0.2px);
+}
+
+/* Soft color drift (new palette) */
+html body.forum-theme::after{
+  content:"";
+  position: fixed;
+  inset: -25%;
+  pointer-events: none;
+  z-index: 0;
+
+  background:
+    conic-gradient(
+      from 220deg at 50% 50%,
+      rgba(0,255,170,0.10),
+      rgba(0,140,255,0.08),
+      rgba(255,230,0,0.06),
+      rgba(255,94,58,0.07),
+      rgba(0,255,170,0.10)
+    );
+
+  opacity: 0.52;
+  filter: blur(36px);
+  animation: forumDrift 18s ease-in-out infinite;
+}
+
+@keyframes forumDrift{
+  0%   { transform: translateX(-6%) translateY(-4%) rotate(0deg); }
+  50%  { transform: translateX(6%)  translateY(5%)  rotate(8deg); }
+  100% { transform: translateX(-6%) translateY(-4%) rotate(0deg); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  html body.forum-theme::after{ animation: none; }
+}
+
+/* Keep content above pseudo-elements */
+html body.forum-theme #root,
+html body.forum-theme main,
+html body.forum-theme header{
+  position: relative;
+  z-index: 1;
+}
+
+/* If CSS Modules wrappers cover the body background */
+html body.forum-theme [class*="page"],
+html body.forum-theme [class*="Page"],
+html body.forum-theme [class*="container"],
+html body.forum-theme [class*="Container"],
+html body.forum-theme [class*="layout"],
+html body.forum-theme [class*="Layout"]{
+  background: transparent !important;
+}

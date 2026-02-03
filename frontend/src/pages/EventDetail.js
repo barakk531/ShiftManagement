@@ -39,24 +39,6 @@ function EventDetailPage() {
 
 export default EventDetailPage;
 
-// async function loadEvent(id) {
-//   const response = await fetch('http://localhost:8080/events/' + id);
-
-//   if (!response.ok) {
-//         const data = await response.json();
-//         throw new Response(
-//         JSON.stringify({ message: data.message || 'Could not fetch event.' }),
-//         { 
-//           status: response.status, 
-//           headers: { 'Content-Type': 'application/json' },
-//         }
-//         );
-//   } else {
-//     const resData = await response.json();
-//     return resData.event;
-//   }
-// }
-
 
 async function loadEvent(id) {
   const response = await fetch('http://localhost:8080/events/' + id, {
@@ -83,29 +65,6 @@ async function loadEvent(id) {
   return resData.event;
 }
 
-
-
-// async function loadEvents() {
-//   const response = await fetch('http://localhost:8080/events');
-
-//   if (!response.ok) {
-//     // return { isError: true, message: 'Could not fetch events.' };
-//     // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
-//     //   status: 500,
-//     // });
-//         const data = await response.json();
-//         throw new Response(
-//         JSON.stringify({ message: data.message || 'Could not fetch events.' }),
-//         { 
-//           status: response.status,
-//           headers: { 'Content-Type': 'application/json' },
-//         }
-//         );
-//   } else {
-//     const resData = await response.json();
-//     return resData.events;
-//   }
-// }
 
 async function loadEvents() {
   const response = await fetch('http://localhost:8080/events', {
@@ -163,26 +122,4 @@ export async function action({ params, request }) {
   return redirect('/events');
 
 
-// export async function action({ params, request }) {
-//   const eventId = params.eventId;
-
-//   const token = getAuthToken();
-//   const response = await fetch('http://localhost:8080/events/' + eventId, {
-//     method: request.method,
-//     headers: {
-//       'Authorization': 'Bearer ' + token,
-//     },
-//   });
-
-    if (!response.ok) {
-        const data = await response.json();
-        throw new Response(
-        JSON.stringify({ message: data.message || 'Could not delete event.' }),
-        { status: response.status,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
-    }
-
-  return redirect('/events');
 }
