@@ -23,6 +23,7 @@ const adminScheduleRouter = require("./routes/adminSchedule");
 const publishedScheduleRoutes = require("./routes/publishedSchedule");
 
 console.log("🔥 app.js started");
+console.log("✅ APP VERSION: calling initDb now");
 
 const app = express();
 
@@ -84,6 +85,7 @@ initDb()
   })
   .catch((err) => {
     console.error("❌ Failed to init DB", err);
+    console.error("❌ initDb failed:", err?.code, err?.message);
     process.exit(1);
   });
 
