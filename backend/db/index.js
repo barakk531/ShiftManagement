@@ -9,20 +9,21 @@ const DB_PASSWORD = process.env.DB_PASSWORD || "";
 const DB_NAME = process.env.DB_NAME || "events_app";
 const DB_PORT = Number(process.env.DB_PORT || 3306);
 
-if (MYSQL_URL) {
-  console.log("DB CONFIG", { mode: "url", MYSQL_URL_SET: true });
-} else {
-  console.log("DB CONFIG", {
-    mode: "parts",
-    DB_HOST,
-    DB_PORT,
-    DB_USER,
-    DB_PASSWORD_SET: Boolean(DB_PASSWORD),
-    DB_NAME,
-  });
-}
+// Prefer DB_* if DB_HOST was explicitly set (and isn't localhost).
+const useParts = Boolean(process.env.DB_HOST) && DB_HOST !== "localhost";
+const useUrl = Boolean(MYSQL_URL) && !useParts;
 
-const pool = MYSQL_URL
+console.log("DB CONFIG", {
+  mode: useUrl ? "url" : "parts",
+  MYSQL_URL_SET: Boolean(MYSQL_URL),
+  DB_HOST,
+  DB_PORT,
+  DB_USER,
+  DB_PASSWORD_SET: Boolean(DB_PASSWORD),
+  DB_NAME,
+});
+
+const pool = useUrl
   ? mysql.createPool(MYSQL_URL)
   : mysql.createPool({
       host: DB_HOST,
@@ -35,9 +36,6 @@ const pool = MYSQL_URL
     });
 
 module.exports = pool;
-
-
-
 
 
 
