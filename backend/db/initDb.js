@@ -91,6 +91,8 @@ async function createPoolFromConfig(cfg) {
 }
 
 async function initDb() {
+  console.log("✅ INITDB VERSION-1: 2026-02-03 retry-enabled");
+
   const cfg = resolveDbConfig();
 
   console.log("INIT DB CONFIG", cfg.mode === "url"
