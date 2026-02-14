@@ -24,6 +24,7 @@ const publishedScheduleRoutes = require("./routes/publishedSchedule");
 
 console.log("🔥 app.js started");
 console.log("✅ APP VERSION: calling initDb now");
+console.log("FRONTEND BUILD", "2026-02-15");
 
 const app = express();
 
