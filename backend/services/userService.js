@@ -7,7 +7,6 @@ const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 
 async function createUser(userData) {
-  console.log("🧠 createUser() called with:", userData.email);
 
   const { email, password } = userData;
 

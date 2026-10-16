@@ -17,7 +17,6 @@ function getJwtKey() {
 }
 
 function createJSONToken(user) {
-  console.log("🔥 createJSONToken CALLED with:", user);
 
   return sign(
     {

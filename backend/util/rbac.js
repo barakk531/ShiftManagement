@@ -19,8 +19,6 @@ function getJwtKey() {
 
 async function requireAuth(req, res, next) {
   
-  console.log("RBAC role check:", req.user);
-
   const header = req.headers.authorization || "";
   const token = header.startsWith("Bearer ") ? header.slice(7) : null;
   if (!token) return res.status(401).json({ message: "Missing token" });
