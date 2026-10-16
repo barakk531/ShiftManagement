@@ -1,0 +1,7 @@
+node_modules/
+build/
+
+# Secrets: keep real values out of git
+.env
+.env.*
+!.env.example
