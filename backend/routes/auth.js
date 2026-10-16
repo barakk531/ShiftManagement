@@ -56,7 +56,6 @@ function toUserPayload(user) {
 // ------------------------------------------------------------
 router.post("/signup", async (req, res, next) => {
   const data = req.body || {};
-  console.log("✅ /signup called. body =", data);
 
   const emailNorm = normalizeEmail(data.email);
   const password = data.password;

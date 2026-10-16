@@ -30,7 +30,6 @@ function requireJwt(req, res, next) {
   }
 
   try {
-    console.log("[shift-swaps] got token len:", token.length);
     const payload = validateJSONToken(token);
     req.user = payload;
     next();
